@@ -1,0 +1,7 @@
+<%= tweets.each do |tweet| %>
+  <h2> Twitter User: <%= tweet.user.screen_name %></h2>
+  <h3> Tweet: <%= tweet.text %></h2>
+  <h4> Time: <%= tweet.created_at %></h4>
+  <br>
+  <br>
+<% end %>

@@ -1,0 +1,16 @@
+<h1 class="heading">Search for a tweet!</h1>
+<div class="container">
+  <div class="row">
+    <div class="col col-lg-5">
+      <%= form_tag('/search', method: 'get') do %>
+        <%= label_tag(:q, "Search:") %>
+        <%= text_field_tag(:q) %>
+      <% end %>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+<% if @tweets %>
+  <%= render partial: "shared/tweets", locals: {tweets: @tweets } %>
+<% end %>
