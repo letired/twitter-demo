@@ -9,8 +9,10 @@ To get this app to run, you have two options:
   - Delete the encrypted `credentials.yml.enc` and create your own using the structure referenced below.
   - Ask for my master key to decrypt and use the existing credentials.
   
- ```
+```yml
 credentials.yml
+
 twitter:
   CONSUMER_KEY: YOUR_KEY_HERE
   CONSUMER_SECRET: YOUR_KEY_HERE
+```
