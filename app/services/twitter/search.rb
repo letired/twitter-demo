@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class Twitter::Search
+  NUMBER_OF_TWEETS = 5
   attr_reader :authenticator, :params, :search_data
   attr_accessor :errors
 
@@ -23,7 +24,7 @@ class Twitter::Search
   end
 
   def search
-    @search_data ||= authenticator.content.search(params.content)
+    @search_data ||= authenticator.content.search(params.content, count: NUMBER_OF_TWEETS)
   rescue Twitter::Error => e
     errors << { search_error: e }
   end
