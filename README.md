@@ -10,7 +10,7 @@ To get this app to run, you have two options:
   - Ask for my master key to decrypt and use the existing credentials.
   
  ```
- credentials.yml
- twitter:
-      CONSUMER_KEY: YOUR_KEY_HERE
-      CONSUMER_SECRET: YOUR_KEY_HERE
+credentials.yml
+twitter:
+  CONSUMER_KEY: YOUR_KEY_HERE
+  CONSUMER_SECRET: YOUR_KEY_HERE
