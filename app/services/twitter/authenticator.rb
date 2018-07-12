@@ -41,6 +41,6 @@ class Twitter::Authenticator
   end
 
   def add_secret(credentials)
-    Rails.application.credentials.twitter.fetch(credentials)
+    Rails.application.credentials&.twitter&.fetch(credentials)
   end
 end
