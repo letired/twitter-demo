@@ -1,27 +1,36 @@
+# frozen_string_literal: true
+
 class Twitter::Search
-  attr_reader :authenticator, :params, :data
+  attr_reader :authenticator, :params, :search_data
   attr_accessor :errors
 
-  def initialize(params)
-    @authenticator = Twitter::Authenticator.new.call
-    @params = Twitter::Parameters.new(params).call
-    @errors = []
+  def self.call(params)
+    new(params).call
   end
 
   def call
-    search
-    verify_authenticator
-    verify_params
-    OpenStruct.new(content: data, errors: errors)
+    verification_check
+    search if errors.empty?
+    OpenStruct.new(content: search_data, errors: errors.flatten)
   end
 
   private
 
-  # Custom exceptions from twitter gem rescued here for display
+  def initialize(params)
+    @authenticator = Twitter::Authenticator.call
+    @params = Twitter::Parameters.call(params)
+    @errors = []
+  end
+
   def search
-    @data ||= authenticator.content.search(params.content, count: 3)
+    @search_data ||= authenticator.content.search(params.content)
   rescue Twitter::Error => e
-    errors << e
+    errors << { search_error: e }
+  end
+
+  def verification_check
+    verify_authenticator
+    verify_params
   end
 
   def verify_authenticator

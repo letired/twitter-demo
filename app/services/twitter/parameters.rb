@@ -1,18 +1,32 @@
 class Twitter::Parameters
   attr_reader :params, :errors
 
+  def self.call(params)
+    new(params).call
+  end
+
+  def call
+    verify_params
+    OpenStruct.new(content: params, errors: errors)
+  end
+
+  private
+
   def initialize(params)
     @params = params
     @errors = []
   end
 
-  def call
-    OpenStruct.new(content: verify_params(params), errors: errors)
+  def verify_params
+    no_params
+    empty_params
   end
 
-  private
+  def no_params
+    errors << { parameter_error: 'No params provided' } if params.nil?
+  end
 
-  def verify_params(params)
-    errors << 'No search term provided' if params.empty?
+  def empty_params
+    errors << { parameter_error: 'No search term provided' } if params&.empty?
   end
 end

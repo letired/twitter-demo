@@ -6,13 +6,11 @@ class TweetsController < ApplicationController
   end
 
   def show
-    results = Twitter::Search.new(search_params[:q]).call
+    results = Twitter::Search.call(search_params[:q])
     if results.errors.empty?
       @tweets = results.content
     else
-      results.errors.each do |error|
-        flash[:error] = error
-      end
+      flash[:error] = results.errors
     end
   end
 
