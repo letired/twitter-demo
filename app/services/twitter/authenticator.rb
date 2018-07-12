@@ -1,5 +1,5 @@
 class Twitter::Authenticator
-  attr_accessor :errors
+  attr_reader :errors, :client
 
   def self.call
     new.call
@@ -7,6 +7,7 @@ class Twitter::Authenticator
 
   def call
     create_client
+    verify_client
     OpenStruct.new(content: create_client, errors: errors)
   end
 
@@ -16,16 +17,30 @@ class Twitter::Authenticator
     @errors = []
   end
 
+  # KeyError exception is intentionally not rescued here
   def create_client
-    Twitter::REST::Client.new do |config|
-      config.consumer_key = credentials(:CONSUMER_KEY)
-      config.consumer_secret = credentials(:CONSUMER_SECRET)
+    @client ||= Twitter::REST::Client.new do |config|
+      config.consumer_key = add_secret(:CONSUMER_KEY)
+      config.consumer_secret = add_secret(:CONSUMER_SECRET)
     end
-  rescue Twitter::Errors => e
+  rescue Twitter::Error => e
     errors << { authenticator_error: e }
   end
 
-  def credentials(type)
-    Rails.application.credentials.twitter.fetch(type)
+  def verify_client
+    verify_consumer_key
+    verify_consumer_secret
+  end
+
+  def verify_consumer_key
+    errors << { authenticator_error: 'missing consumer_key' } unless client.consumer_key
+  end
+
+  def verify_consumer_secret
+    errors << { authenticator_error: 'missing consumer_secret' } unless client.consumer_secret
+  end
+
+  def add_secret(credentials)
+    Rails.application.credentials.twitter.fetch(credentials)
   end
 end
