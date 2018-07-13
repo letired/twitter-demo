@@ -1,6 +1,4 @@
 class Twitter::Authenticator
-  attr_reader :errors, :client
-
   def self.call
     new.call
   end
@@ -12,6 +10,8 @@ class Twitter::Authenticator
   end
 
   private
+
+  attr_reader :errors, :client
 
   def initialize
     @errors = []

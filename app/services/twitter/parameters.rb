@@ -1,6 +1,4 @@
 class Twitter::Parameters
-  attr_reader :params, :errors
-
   def self.call(params)
     new(params).call
   end
@@ -11,6 +9,8 @@ class Twitter::Parameters
   end
 
   private
+
+  attr_reader :params, :errors
 
   def initialize(params)
     @params = params

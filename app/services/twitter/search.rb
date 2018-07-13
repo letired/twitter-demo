@@ -2,8 +2,6 @@
 
 class Twitter::Search
   NUMBER_OF_TWEETS = 5
-  attr_reader :authenticator, :params, :search_data
-  attr_accessor :errors
 
   def self.call(params)
     new(params).call
@@ -16,6 +14,8 @@ class Twitter::Search
   end
 
   private
+
+  attr_reader :authenticator, :params, :search_data, :errors
 
   def initialize(params)
     @authenticator = Twitter::Authenticator.call
